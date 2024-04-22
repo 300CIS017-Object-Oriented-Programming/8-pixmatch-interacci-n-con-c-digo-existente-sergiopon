@@ -236,6 +236,7 @@ def ScoreEmoji():
     elif mystate.myscore > 10: return '😁'
 
 def NewGame():
+    conteo=0
     ResetBoard()
     total_cells_per_row_or_col = mystate.GameDetails[2]
 
@@ -307,7 +308,6 @@ def NewGame():
         elif ((total_cells_per_row_or_col * 9)+1) <= vcell <= (total_cells_per_row_or_col * 10):
             arr_ref = '10'
             mval = (total_cells_per_row_or_col * 9)
-
         globals()['cols' + arr_ref][vcell-mval] = globals()['cols' + arr_ref][vcell-mval].empty()
         if mystate.plyrbtns[vcell]['isPressed'] == True:
             if mystate.plyrbtns[vcell]['isTrueFalse'] == True:
@@ -315,7 +315,7 @@ def NewGame():
 
             elif mystate.plyrbtns[vcell]['isTrueFalse'] == False:
                 globals()['cols' + arr_ref][vcell-mval].markdown(pressed_emoji.replace('|fill_variable|', '❌'), True)
-
+                conteo =conteo+1
         else:
             vemoji = mystate.plyrbtns[vcell]['eMoji']
             globals()['cols' + arr_ref][vcell-mval].button(vemoji, on_click=PressedCheck, args=(vcell, ), key=f"B{vcell}")
@@ -332,7 +332,14 @@ def NewGame():
         tm.sleep(5)
         mystate.runpage = Main
         st.rerun()
+    total_celdas_dificultad = total_cells_per_row_or_col**2
+    mitad_celdas = total_celdas_dificultad/2
 
+    if conteo== (mitad_celdas + 1):
+        st.snow()
+        tm.sleep(5)
+        mystate.runpage = Main
+        st.rerun()
 def Main():
     st.markdown('<style>[data-testid="stSidebar"] > div:first-child {width: 310px;}</style>', unsafe_allow_html=True,)  # reduce sidebar width
     st.markdown(purple_btn_colour, unsafe_allow_html=True)
